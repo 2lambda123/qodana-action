@@ -1,6 +1,8 @@
 import * as artifact from '@actions/artifact'
 import * as cache from '@actions/cache'
-import * as core from '@actions/core'
+import * as core from '@actions/core' 
+import * as io from '@actions/io'
+import * as utils from './utils'
 import * as exec from '@actions/exec'
 import * as github from '@actions/github'
 import * as glob from '@actions/glob'
@@ -25,6 +27,16 @@ import {
   BRANCH,
   isNativeMode
 } from '../../common/qodana'
+export async function qodana(inputs: Inputs, args: string[] = []): Promise<number> {
+  if (args.length === 0) {
+    args = getQodanaScanArgs(inputs.args, inputs.resultsDir, inputs.cacheDir)
+    if (inputs.prMode && github.context.payload.pull_request !== undefined) {
+      const pr = github.context.payload.pull_request
+      args.push('--commit', `CI${pr.base.sha}`)
+    }
+  }
+  return (await exec.getExecOutput(EXECUTABLE, args, { ignoreReturnCode: true, env: {...process.env, NONINTERACTIVE: '1' }})).exitCode
+}
 import path from 'path'
 import * as fs from 'fs'
 import * as os from 'os'
