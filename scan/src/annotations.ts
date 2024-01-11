@@ -6,7 +6,7 @@ import type {Log, Result, Tool} from 'sarif'
 import {getWorkflowRunUrl, publishGitHubCheck} from './utils'
 import {getProblemPlural} from './output'
 
-function getQodanaHelpString(): string {
+export function publishAnnotations(): string {
   return `This result was published with [Qodana GitHub Action](${getWorkflowRunUrl()})`
 }
 export const ANNOTATION_FAILURE = 'failure'

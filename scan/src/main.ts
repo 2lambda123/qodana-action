@@ -21,6 +21,7 @@ import {
   pushQuickFixes
 } from './utils'
 import {publishOutput} from './output'
+import * as fs from 'fs'
 
 // Catch and log any unhandled exceptions.  These exceptions can leak out of the uploadChunk method in
 // @actions/toolkit when a failed upload closes the file descriptor causing any in-process reads to
@@ -74,6 +75,8 @@ async function main(): Promise<void> {
     const canUploadCache =
       isNeedToUploadCache(inputs.useCaches, inputs.cacheDefaultBranchOnly) &&
       isExecutionSuccessful(exitCode)
+  import {publishOutput} from './output'
+import * as annotations from './annotations'
 
     await Promise.all([
       pushQuickFixes(inputs.pushFixes, inputs.commitMessage),
